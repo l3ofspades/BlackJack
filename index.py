@@ -43,11 +43,10 @@ def blackjack():
         elif calculate_hand(player_hand) > 21:
             print("Bust! You lose.")
             return
-        action = input("Do you want to (H)it or (S)tand? ").strip().lower()
-        if action == 'h':
-            player_hand.append(deck.pop())
-        elif action == 's':
-            break
+  hit_button = tk.Button(window,
+                         text="Hit", command=hit)
+stand_button = tk.Button(window,
+                         text="Stand", cpmmand=stand) ))
     
     # Dealer's Turn
     while calculate_hand(dealer_hand) < 17:
