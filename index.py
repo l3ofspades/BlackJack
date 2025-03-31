@@ -43,10 +43,10 @@ def blackjack():
         elif calculate_hand(player_hand) > 21:
             print("Bust! You lose.")
             return
-  hit_button = tk.Button(window,
-                         text="Hit", command=hit)
-stand_button = tk.Button(window,
-                         text="Stand", cpmmand=stand) ))
+    hit_button = tk.Button(window,
+text="Hit", command=hit)
+    stand_button = tk.Button(window,
+                         text="Stand", command=stand)   
     
     # Dealer's Turn
     while calculate_hand(dealer_hand) < 17:
