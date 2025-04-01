@@ -1,3 +1,5 @@
+import tkinter as tk
+from tkinter import messagebox
 import random
 
 def create_deck():
@@ -25,43 +27,88 @@ def calculate_hand(hand):
     return total
 
 def display_hand(name, hand):
-    cards = ', '.join([f"{card['value']} of {card['suit']}" for card in hand])
-    print(f"{name}'s hand: {cards} (Total: {calculate_hand(hand)})")
+    for widget in frame.winfo_children():
+        widget.destroy()
 
-def blackjack():
-    print("\nWelcome to Blackjack!")
-    deck = create_deck()
-    player_hand = [deck.pop(), deck.pop()]
-    dealer_hand = [deck.pop(), deck.pop()]
-    
-    # Player's Turn
-    while True:
-        display_hand("Player", player_hand)
-        if calculate_hand(player_hand) == 21:
-            print("Blackjack! You win!")
-            return
-        elif calculate_hand(player_hand) > 21:
-            print("Bust! You lose.")
-            return
-    hit_button = tk.Button(window,
-text="Hit", command=hit)
-    stand_button = tk.Button(window,
-                         text="Stand", command=stand)   
-    
-    # Dealer's Turn
+        for card in hand:
+            card_label = tk.Label(frame, text=f"{card['value']} of {card['suit']}")
+            card_label.pack()
+
+def check_winner():
+    player_total = calculate_hand(player_hand)
+    dealer_total = calculate_hand(dealer_hand)
+    if player_total > 21:
+        messagebox.showinfo("Result", "You bust! Dealer wins.")
+    elif dealer_total > 21 or player_total > dealer_total:
+        messagebox.showinfo("Result", "You win!")
+    elif player_total < dealer_total:
+        messagebox.showinfo("Result", "Dealer wins.")
+    else:
+        messagebox.showinfo("Result", "It's a tie!")
+
+
+def hit():
+    if calculate_hand(player_hand) < 21:
+     player_hand.append(deck.pop())
+    display_hand("Player", player_hand)
+    if calculate_hand(player_hand) > 21:
+        messagebox.showinfo("Result", "You bust! Dealer wins.")
+
+
+def stand():
+    #prevent repeated execution by disabling buttons
+    hit_button.config(state=tk.DISABLED)
+    stand_button.config(state=tk.DISABLED)
+
     while calculate_hand(dealer_hand) < 17:
         dealer_hand.append(deck.pop())
     display_hand("Dealer", dealer_hand)
-    
-    player_total = calculate_hand(player_hand)
-    dealer_total = calculate_hand(dealer_hand)
-    
-    if dealer_total > 21 or player_total > dealer_total:
-        print("You win!")
-    elif player_total < dealer_total:
-        print("Dealer wins.")
-    else:
-        print("It's a tie!")
+    check_winner()
 
-if __name__ == '__main__':
-    blackjack()
+def new_game():
+    global deck, player_hand, dealer_hand
+    deck = create_deck()
+    player_hand = [deck.pop(), deck.pop()]
+    dealer_hand = [deck.pop(), deck.pop()]
+    display_hand(plaryer_frame, player_hand)
+    display_hand(dealer_frame, dealer_hand)
+
+    #re-enable buttons for new game
+    hit_button.config(state=tk.NORMAL)
+    stand_button.config(state=tk.NORMAL)
+
+    #GUI setup
+window = tk.Tk()
+
+window.title("Blackjack")
+window.geometry("400x400")
+
+player_frame = tk.Frame(window)
+player_frame.pack(side=tk.LEFT, padx=20, pady=20)
+
+dealer_frame = tk.Frame(window)
+dealer_frame.pack(side=tk.RIGHT, padx=20, pady=20)
+
+btn_frame = tk.Frame(window)
+btn_frame.pack(side=tk.BOTTOM, pady=20)
+
+hit_button = tk.Button(btn_frame, text="Hit", command=hit)
+hit_button.pack(side=tk.LEFT, padx=10)
+
+stand_button = tk.Button(btn_frame, text="Stand", command=stand)
+stand_button.pack(side=tk.LEFT, padx=10)
+
+new_game_button = tk.Button(btn_frame, text="New Game", command=new_game)
+new_game_button.pack(side=tk.LEFT, padx=10)
+
+# iNITIALIZE GAME
+deck = create_deck()
+player_hand = [deck.pop(), deck.pop()]
+dealer_hand = [deck.pop(), deck.pop()]
+
+display_hand("Player", player_hand)
+display_hand("Dealer", dealer_hand)
+
+window.mainloop()
+
+ 
