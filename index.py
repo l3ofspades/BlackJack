@@ -111,4 +111,6 @@ display_hand("Dealer", dealer_hand)
 
 window.mainloop()
 
- 
+# This code is a simple implementation of a Blackjack game using Tkinter for the GUI. The game allows the player to hit or stand, and it checks for busts and determines the winner. The deck is shuffled at the start of each new game, and the player can play multiple rounds without restarting the application.
+# The game logic includes calculating hand values, handling Aces, and displaying the hands of both the player and dealer. The GUI consists of frames for the player and dealer hands, buttons for game actions, and a message box for displaying results.  
+# First Python GUI project.
